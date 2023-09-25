@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 
@@ -12,6 +14,8 @@ import javax.annotation.PostConstruct;
 public class BotInitializer {
 
     private final TelegramBotUpdatesListener bot;
+
+    private Logger logger = LoggerFactory.getLogger(BotInitializer.class);
 
     public BotInitializer(TelegramBotUpdatesListener bot) {
         this.bot = bot;
@@ -23,7 +27,7 @@ public class BotInitializer {
         try {
             telegramBotsApi.registerBot(bot);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            logger.error("Ошибка при регистрации бота: {}", e.getMessage(), e);
         }
     }
 }
