@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -30,10 +31,11 @@ public class CategoryServiceImpl implements CategoryService {
         if (categoryRepository.findByName(child).isPresent()) {
             return "Такая категория " + child + " уже существует";
         }
-        if (categoryRepository.findByName(parent).isEmpty()) {
+        Optional<Category> optionalCategory = categoryRepository.findByName(parent);
+        if (optionalCategory.isEmpty()) {
             return "Такой категории-родителя " + parent + " не существует";
         }
-        Category parentCategory = categoryRepository.findByName(parent).get();
+        Category parentCategory = optionalCategory.get();
         Category category = new Category(parentCategory.getId(), child);
         categoryRepository.save(category);
         return "Категория " + child + " успешно добавлена";
@@ -71,10 +73,11 @@ public class CategoryServiceImpl implements CategoryService {
     public String remove(String category)
     //здесь можно было бы также использовать рекурсивный метод, по аналогии с buildCategoryTree
     {
-        if (categoryRepository.findByName(category).isEmpty()) {
+        Optional<Category> optionalCategory = categoryRepository.findByName(category);
+        if (optionalCategory.isEmpty()) {
             return "Такой категории " + category + " не существует";
         }
-        Long id = categoryRepository.findByName(category).get().getId();
+        Long id = optionalCategory.get().getId();
         categoryRepository.deleteCategoryAndChildsById(id);
 
         return "Категория " + category + " и все её потомки успешно удалены";
