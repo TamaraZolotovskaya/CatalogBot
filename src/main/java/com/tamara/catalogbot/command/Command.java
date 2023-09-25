@@ -3,14 +3,14 @@ package com.tamara.catalogBot.command;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 /**
- * Command interface for handling telegram-bot commands.
+ * Командный интерфейс для обработки команд Telegram-бота.
  */
 public interface Command {
 
     /**
-     * Main method, which is executing command logic.
-     *
-     * @param update provided {@link Update} object with all the needed data for command.
-     */
+      * Основной метод, выполняющий логику команды.
+      *
+      * @param update объект {@link Update}, содержит информацию о сообщении пользователя.
+      */
     void execute(Update update);
 }

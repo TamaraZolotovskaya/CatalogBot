@@ -1,15 +1,14 @@
 package com.tamara.catalogBot.service;
 
 /**
- * Service for sending messages via telegram-bot.
+ * Интерфейс, содержащий метод для отправки сообщений через бота.
  */
 public interface SendBotMessageService {
-
     /**
-     * Send message via telegram bot.
+     * Метод отправляет сообщение в указанный чат.
      *
-     * @param chatId  provided chatId in which messages would be sent.
-     * @param message provided message to be sent.
+     * @param chatId  Уникальный идентификатор чата.
+     * @param message Текст сообщения.
      */
     void sendMessage(Long chatId, String message);
 }
