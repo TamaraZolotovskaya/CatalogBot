@@ -9,13 +9,23 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-
+/**
+ * Реализация интерфейса {@link CategoryService} для управления категориями и их иерархией.
+ *
+ * Этот класс предоставляет реализацию методов для добавления, просмотра и удаления категорий.
+ */
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    /**
+     * Добавляет новую корневую категорию с указанным именем.
+     *
+     * @param root Название новой корневой категории.
+     * @return Сообщение о результате операции.
+     */
     @Override
     public String addRoot(String root) {
         if (categoryRepository.existsByParentId(0L)) {
@@ -26,6 +36,13 @@ public class CategoryServiceImpl implements CategoryService {
         return "Категория " + root + " успешно добавлена";
     }
 
+    /**
+     * Добавляет новую дочернюю категорию с указанным именем к существующей родительской категории.
+     *
+     * @param child  Название новой дочерней категории.
+     * @param parent Название родительской категории, к которой следует добавить дочернюю.
+     * @return Сообщение о результате операции.
+     */
     @Override
     public String add(String child, String parent) {
         if (categoryRepository.findByName(child).isPresent()) {
@@ -41,6 +58,11 @@ public class CategoryServiceImpl implements CategoryService {
         return "Категория " + child + " успешно добавлена";
     }
 
+    /**
+     * Возвращает структурированный вид дерева категорий.
+     *
+     * @return Строка, представляющая дерево категорий.
+     */
     @Override
     public String view() {
         List<Category> categories = categoryRepository.findAll();
@@ -56,6 +78,14 @@ public class CategoryServiceImpl implements CategoryService {
         return treeBuilder.toString();
     }
 
+    /**
+     * Рекурсивный метод для построения структурированного дерева категорий в виде строки.
+     *
+     * @param treeBuilder  StringBuilder для добавления категорий и их отступов.
+     * @param categories   Список всех категорий.
+     * @param currentCategory Текущая категория, для которой строится поддерево.
+     * @param depth       Глубина вложенности текущей категории в дереве.
+     */
     private static void buildCategoryTree(StringBuilder treeBuilder, List<Category> categories, Category currentCategory, int depth) {
         // Добавляем отступы в зависимости от глубины вложенности
         treeBuilder.append("---".repeat(Math.max(0, depth)));
@@ -69,6 +99,12 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+    /**
+     * Удаляет указанную категорию и все её дочерние категории.
+     *
+     * @param category Название категории, которую следует удалить.
+     * @return Сообщение о результате операции.
+     */
     @Override
     public String remove(String category)
     //здесь можно было бы также использовать рекурсивный метод, по аналогии с buildCategoryTree
