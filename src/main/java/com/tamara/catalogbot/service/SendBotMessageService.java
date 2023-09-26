@@ -1,7 +1,7 @@
 package com.tamara.catalogBot.service;
 
 /**
- * Интерфейс, содержащий метод для отправки сообщений через бота.
+ * Интерфейс, содержащий метод для отправки сообщений.
  */
 public interface SendBotMessageService {
     /**

@@ -25,20 +25,21 @@ public class AddCommand implements Command {
     @Override
     public void execute(Update update) {
         String message;
+        long chatId = update.getMessage().getChatId();
         String text = update.getMessage().getText().trim();
-        String[] commandArray = text.split("\\s+<");
+        String[] commandArray = text.replaceAll("\\s+", " ").split("\\s+<");
         if (commandArray.length == 2) {
             //если добавляем корневой элемент
             String category = StringUtils.substring(commandArray[1], 0, commandArray[1].length() - 1);
-            message = categoryService.addRoot(category);
+            message = categoryService.addRoot(category, chatId);
         } else if (commandArray.length == 3) {
             //если добавляем дочерний элемент к родительскому
             String child = StringUtils.substring(commandArray[1], 0, commandArray[1].length() - 1);
             String parent = StringUtils.substring(commandArray[2], 0, commandArray[2].length() - 1);
-            message = categoryService.add(child, parent);
+            message = categoryService.add(child, parent, chatId);
         } else {
             message = "Вы неверно оформили команду /addElement";
         }
-        sendBotMessageService.sendMessage(update.getMessage().getChatId(), message);
+        sendBotMessageService.sendMessage(chatId, message);
     }
 }

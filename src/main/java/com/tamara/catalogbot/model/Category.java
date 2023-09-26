@@ -39,14 +39,23 @@ public class Category {
     private String name;
 
     /**
+     * Идентификатор чата.
+     */
+    @Column(name = "chat_id")
+    private long chatId;
+
+    /**
      * Конструктор класса Category.
      *
      * @param parentId Идентификатор родительской категории.
      * @param name      Название категории.
+     * @param chatId    Идентификатор чата.
+     *
      */
-    public Category(Long parentId, String name) {
+    public Category(Long parentId, String name, long chatId) {
         this.parentId = parentId;
         this.name = name;
+        this.chatId = chatId;
     }
 }
 
