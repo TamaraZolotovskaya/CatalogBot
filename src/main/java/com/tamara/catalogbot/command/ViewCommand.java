@@ -25,8 +25,9 @@ public class ViewCommand implements Command {
      */
     @Override
     public void execute(Update update) {
-        String message = categoryService.view();
-        sendBotMessageService.sendMessage(update.getMessage().getChatId(), message);
+        long chatId = update.getMessage().getChatId();
+        String message = categoryService.view(chatId);
+        sendBotMessageService.sendMessage(chatId, message);
     }
 }
 

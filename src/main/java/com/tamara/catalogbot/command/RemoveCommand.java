@@ -26,15 +26,16 @@ public class RemoveCommand implements Command {
     @Override
     public void execute(Update update) {
         String message;
+        long chatId = update.getMessage().getChatId();
         String text = update.getMessage().getText().trim();
-        String[] commandArray = text.split("\\s+<");
+        String[] commandArray = text.replaceAll("\\s+", " ").split("\\s+<");
         if (commandArray.length == 2) {
             String category = StringUtils.substring(commandArray[1], 0, commandArray[1].length() - 1);
-            message = categoryService.remove(category);
+            message = categoryService.remove(category, chatId);
         } else {
             message = "Вы неверно оформили команду /removeElement";
         }
-        sendBotMessageService.sendMessage(update.getMessage().getChatId(), message);
+        sendBotMessageService.sendMessage(chatId, message);
     }
 }
 
